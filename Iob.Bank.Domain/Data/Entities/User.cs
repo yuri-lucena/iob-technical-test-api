@@ -7,15 +7,15 @@ namespace Iob.Bank.Domain.Data.Entities;
 public class User : BaseEntity
 {
     [Column("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     [Column("identifier")]
-    public string Identifier { get; set; }
+    public string? Identifier { get; set; }
     [Column("birthday")]
     public DateTime Birthday { get; set; }
     [Column("email")]
     public string? Email { get; set; }
     [Column("password")]
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     [Column("phone_number")]
     public string? PhoneNumber { get; set; }
