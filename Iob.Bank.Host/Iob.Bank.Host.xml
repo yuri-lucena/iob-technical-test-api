@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Iob.Bank.Host</name>
+    </assembly>
+    <members>
+        <member name="T:Iob.Bank.Host.Controllers.Auth.AuthController">
+            <summary>
+            Controller for authentication-related endpoints.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.Auth.AuthController.#ctor(Iob.Bank.Domain.Interfaces.Services.IAuthService)">
+            <summary>
+            Controller for authentication-related endpoints.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.Auth.AuthController.SignIn(Iob.Bank.Domain.Data.Dtos.UserAuthRequestDto)">
+            <summary>
+            Signs in a user, returning a JSON Web Token on success.
+            </summary>
+            <param name="authRequest">The authentication request.</param>
+            <returns>A JSON Web Token.</returns>
+            <response code="200">The user was successfully signed in.</response>
+            <response code="400">The user could not be signed in.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.Auth.AuthController.VerifyToken">
+            <summary>
+            Validates that a JSON Web Token is valid.
+            </summary>
+            <returns>True if the token is valid, otherwise false.</returns>
+            <response code="200">The token is valid.</response>
+        </member>
+        <member name="T:Iob.Bank.Host.Controllers.BankAccountController">
+            <summary>
+            Controller for managing bank accounts.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.#ctor(Iob.Bank.Domain.Interfaces.Services.IBankAccountService)">
+            <summary>
+            Controller for managing bank accounts.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.CreateBankAccount(Iob.Bank.Domain.Data.Dtos.BankAccountDto)">
+            <summary>
+            Creates a new bank account.
+            </summary>
+            <param name="bankAccountDto">The bank account data.</param>
+            <returns>The created bank account.</returns>
+            <response code="200">The bank account was created successfully.</response>
+            <response code="400">The bank account could not be created.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.UpdateBankAccount(System.Int64,Iob.Bank.Domain.Data.Dtos.BankAccountDto)">
+            <summary>
+            Updates an existing bank account.
+            </summary>
+            <param name="id">The bank account ID.</param>
+            <param name="bankAccountDto">The updated bank account data.</param>
+            <returns>The updated bank account.</returns>
+            <response code="200">The bank account was updated successfully.</response>
+            <response code="400">The bank account could not be updated.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.DeleteBankAccount(System.Int64)">
+            <summary>
+            Deletes an existing bank account.
+            </summary>
+            <param name="id">The bank account ID.</param>
+            <returns>True if the bank account was deleted successfully, otherwise false.</returns>
+            <response code="200">The bank account was deleted successfully.</response>
+            <response code="400">The bank account could not be deleted.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.GetBankAccount(System.Int64)">
+            <summary>
+            Gets a bank account by its ID.
+            </summary>
+            <param name="id">The bank account ID.</param>
+            <returns>The bank account.</returns>
+            <response code="200">The bank account was found successfully.</response>
+            <response code="400">The bank account could not be found.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.GetAccountBalance(System.Int64)">
+            <summary>
+            Gets the current balance of a bank account.
+            </summary>
+            <param name="bankAccountId">The bank account ID.</param>
+            <returns>The current balance of the bank account.</returns>
+            <response code="200">The balance was retrieved successfully.</response>
+            <response code="400">The balance could not be retrieved.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.BankAccountController.GetAllBankAccounts">
+            <summary>
+            Gets all bank accounts.
+            </summary>
+            <returns>All bank accounts.</returns>
+            <response code="200">The bank accounts were retrieved successfully.</response>
+            <response code="400">The bank accounts could not be retrieved.</response>
+        </member>
+        <member name="T:Iob.Bank.Host.Controllers.LaunchBankController">
+            <summary>
+            Controller for managing bank launches.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.LaunchBankController.#ctor(Iob.Bank.Domain.Interfaces.Services.IBankLaunchService)">
+            <summary>
+            Controller for managing bank launches.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.LaunchBankController.CreateLaunchCredit(Iob.Bank.Domain.Data.Dtos.BankLaunchDto)">
+            <summary>
+            Creates a new credit bank launch.
+            </summary>
+            <param name="bankLaunchDto">The credit bank launch data.</param>
+            <returns>A boolean indicating whether the credit bank launch was created successfully.</returns>
+            <response code="200">The credit bank launch was created successfully.</response>
+            <response code="400">The credit bank launch could not be created.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.LaunchBankController.CreateLaunch(Iob.Bank.Domain.Data.Dtos.BankLaunchDto)">
+            <summary>
+            Creates a new debit bank launch.
+            </summary>
+            <param name="bankLaunchDto">The debit bank launch data.</param>
+            <returns>A boolean indicating whether the debit bank launch was created successfully.</returns>
+            <response code="200">The debit bank launch was created successfully.</response>
+            <response code="400">The debit bank launch could not be created.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.LaunchBankController.CreateLaunchTransfer(Iob.Bank.Domain.Data.Dtos.BankLaunchDto)">
+            <summary>
+            Creates a new transfer bank launch.
+            </summary>
+            <param name="bankLaunchDto">The transfer bank launch data.</param>
+            <returns>A boolean indicating whether the transfer bank launch was created successfully.</returns>
+            <response code="200">The transfer bank launch was created successfully.</response>
+            <response code="400">The transfer bank launch could not be created.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.LaunchBankController.GetAllLaunchByBankAccount(System.Int64)">
+            <summary>
+            Gets all the bank launches of a bank account.
+            </summary>
+            <param name="bankAccountId">The bank account ID.</param>
+            <returns>All the bank launches of the bank account.</returns>
+            <response code="200">The bank launches were found successfully.</response>
+            <response code="400">The bank launches could not be found.</response>
+            <response code="404">The bank account could not be found.</response>
+        </member>
+        <member name="T:Iob.Bank.Host.Controllers.Base.BaseController">
+            <summary>
+            Base controller for all controllers in the application.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.Base.BaseController.GetClaim(System.String)">
+            <summary>
+            Gets a claim from the current user's identity.
+            </summary>
+            <param name="name">The name of the claim to retrieve.</param>
+            <returns>The claim with the specified name.</returns>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.Base.BaseController.UserId">
+            <summary>
+            Gets the user ID from the current user's identity.
+            </summary>
+            <returns>The user ID.</returns>
+        </member>
+        <member name="T:Iob.Bank.Host.Controllers.UserController">
+            <summary>
+            Controller for user-related operations.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.#ctor(Iob.Bank.Domain.Interfaces.Services.IUserService,FluentValidation.IValidator{Iob.Bank.Domain.Data.Dtos.UserDto})">
+            <summary>
+            Controller for user-related operations.
+            </summary>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.CreateUser(Iob.Bank.Domain.Data.Dtos.UserDto)">
+            <summary>
+            Creates a new user.
+            </summary>
+            <param name="userDto">The user data.</param>
+            <returns>The created user.</returns>
+            <response code="200">The user was created successfully.</response>
+            <response code="400">The user could not be created.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.UpdateUser(System.Int64,Iob.Bank.Domain.Data.Dtos.UserDto)">
+            <summary>
+            Updates a user.
+            </summary>
+            <param name="id">The user ID.</param>
+            <param name="userDto">The updated user data.</param>
+            <returns>The updated user.</returns>
+            <response code="200">The user was updated successfully.</response>
+            <response code="400">The user could not be updated.</response>
+            <response code="404">The user could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.DeleteUser(System.Int64)">
+            <summary>
+            Deletes a user.
+            </summary>
+            <param name="id">The user ID.</param>
+            <returns>True if the user was deleted successfully, otherwise false.</returns>
+            <response code="200">The user was deleted successfully.</response>
+            <response code="400">The user could not be deleted.</response>
+            <response code="404">The user could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.GetUser(System.Int64)">
+            <summary>
+            Gets a user by its ID.
+            </summary>
+            <param name="id">The user ID.</param>
+            <returns>The user.</returns>
+            <response code="200">The user was found successfully.</response>
+            <response code="400">The user could not be found.</response>
+            <response code="404">The user could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.GetAllUsers">
+            <summary>
+            Gets all users.
+            </summary>
+            <returns>All users.</returns>
+            <response code="200">The users were found successfully.</response>
+            <response code="400">The users could not be found.</response>
+        </member>
+        <member name="M:Iob.Bank.Host.Controllers.UserController.CreateUserWithBankAccount(Iob.Bank.Domain.Data.Dtos.UserDto)">
+            <summary>
+            Creates a new user with a bank account.
+            </summary>
+            <param name="createUserWithBankAccountDto">The user and bank account data.</param>
+            <returns>The bank account.</returns>
+            <response code="200">The user and bank account were created successfully.</response>
+            <response code="400">The user and bank account could not be created.</response>
+        </member>
+    </members>
+</doc>

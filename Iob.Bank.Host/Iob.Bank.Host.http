@@ -1,6 +1,0 @@
-@Iob.Bank.Host_HostAddress = http://localhost:5104
-
-GET {{Iob.Bank.Host_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
