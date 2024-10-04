@@ -1,15 +1,24 @@
 version: 0.2
+env:
+  parameter-store:
+    DOCKER_REGISTRY_USERNAME: /cloud-cicd/docker-credentials/username
+    DOCKER_REGISTRY_PASSWORD: /cloud-cicd/docker-credentials/password
+    DOCKER_REGISTRY_URL: /cloud-cicd/docker-registry/url
 phases:
   install:
     runtime-versions:
       dotnet: 8.0
   build:
     commands:
+      - echo "Building Docker image"
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
+      - docker build -t ${DOCKER_REGISTRY_USERNAME}/iob.api.host:latest -f Iob.Bank.Host/Dockerfile
+      - echo "Pushing Docker image"
+      - docker push ${DOCKER_REGISTRY_USERNAME}/iob.api.host:latest
       - dotnet build -c Release Iob.Bank.Host/Iob.Bank.Host.csproj
   post_build:
     commands:
-      - dotnet publish -c Release  -r linux-x64 Iob.Bank.Host/Iob.Bank.Host.csproj
+      - echo "Build complete"
 artifacts:
   files:
-    - Iob.Bank.Host/bin/Release/net8.0/linux-x64/publish/**/*
-  discard-paths: yes
+    - "**/*"
