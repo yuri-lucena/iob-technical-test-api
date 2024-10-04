@@ -1,6 +1,7 @@
 services:
   iob.bank.api:
-    image: ${DOCKER_REGISTRY-}iobapihost
+    container_name: iob.bank.api
+    image: yurilucenaa/iob.api.host
     build:
       context: .
       dockerfile: Iob.Bank.Host/Dockerfile
@@ -9,21 +10,29 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Password=1234
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dockerdemo.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/iobcert.pfx
     ports:
       - "8080:8080"
       - "8081:8081"
+    networks:
+      - iob-network
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - ~/.aspnet/https:/https:ro
+      - ./Iob.Bank.Host/Cert:/https:ro
     depends_on:
       - iob.db
+
   iob.db:
+    container_name: iob.db
     image: mysql:latest
     environment:
       - MYSQL_ROOT_PASSWORD=1234
+    networks:
+      - iob-network
     ports:
       - "3306:3306"
     volumes:
       - "~/.dbiob:/var/lib/mysql"
+networks:
+  iob-network:
+    name: iob-network
+    driver: bridge
