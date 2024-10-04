@@ -1,44 +1,84 @@
+using Iob.Bank.Application.IoC;
+using Iob.Bank.Domain.Data;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
+builder.Services.AddControllers();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.Resolve(builder.Configuration);
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Iob Bank API",
+        Description = "Web API for Iob Bank - Thechnical Test",
+        Version = "v1",
+        Contact = new OpenApiContact
+        {
+            Name = "Yuri Lucena",
+            Url = new Uri("https://github.com/yuri-lucena")
+        }
+    });
+
+    // Bearer token authentication
+    OpenApiSecurityScheme securityDefinition = new OpenApiSecurityScheme()
+    {
+        Name = "Bearer",
+        BearerFormat = "JWT",
+        Scheme = "bearer",
+        Description = "Specify the authorization token.",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+    };
+    c.AddSecurityDefinition("jwt_auth", securityDefinition);
+
+    // Make sure swagger UI requires a Bearer token specified
+    OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme()
+    {
+        Reference = new OpenApiReference()
+        {
+            Id = "jwt_auth",
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+    OpenApiSecurityRequirement securityRequirements = new OpenApiSecurityRequirement()
+    {
+        {securityScheme, new string[] { }},
+    };
+    c.AddSecurityRequirement(securityRequirements);
+    c.CustomSchemaIds(i => i.FullName);
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Iob.Bank.Host.xml"));
+});
 
 var app = builder.Build();
+app.ConfigureMiddlewares();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Iob Bank API");
+});
+// }
+
+app.UseCors(cors => cors
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
