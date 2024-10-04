@@ -1,0 +1,29 @@
+services:
+  iob.bank.api:
+    image: ${DOCKER_REGISTRY-}iobapihost
+    build:
+      context: .
+      dockerfile: Iob.Bank.Host/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dockerdemo.pfx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      - iob.db
+  iob.db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - "~/.dbiob:/var/lib/mysql"
