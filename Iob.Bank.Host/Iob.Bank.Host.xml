@@ -228,7 +228,7 @@
             <summary>
             Creates a new user with a bank account.
             </summary>
-            <param name="createUserWithBankAccountDto">The user and bank account data.</param>
+            <param name="userDto">The user and bank account data.</param>
             <returns>The bank account.</returns>
             <response code="200">The user and bank account were created successfully.</response>
             <response code="400">The user and bank account could not be created.</response>
