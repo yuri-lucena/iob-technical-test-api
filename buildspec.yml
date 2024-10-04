@@ -1,0 +1,15 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      dotnet: 8.0
+  build:
+    commands:
+      - dotnet build -c Release Iob.Bank.Host/Iob.Bank.Host.csproj
+  post_build:
+    commands:
+      - dotnet publish -c Release  -r linux-x64 Iob.Bank.Host/Iob.Bank.Host.csproj
+artifacts:
+  files:
+    - Iob.Bank.Host/bin/Release/net8.0/linux-x64/publish/**/*
+  discard-paths: yes
