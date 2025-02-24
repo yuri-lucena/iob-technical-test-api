@@ -16,8 +16,6 @@ Para executar o projeto, faça o seguinte:
 
 yuri@iob.com : 123
 
-tata@iob.com : 123
-
 ## Tecnologias utilizadas
 
 - .NET 8.0
